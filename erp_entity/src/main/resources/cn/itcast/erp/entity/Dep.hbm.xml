@@ -6,7 +6,7 @@
 	<class name="cn.itcast.erp.entity.Dep" table="dep">
 		<id name="uuid">
 			<generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-				<param name="sequence_name">DEP_SEQ</param>
+				<param name="sequence_name">dep_seq</param>
 			</generator>
 		</id>
 		<property name="name"></property>

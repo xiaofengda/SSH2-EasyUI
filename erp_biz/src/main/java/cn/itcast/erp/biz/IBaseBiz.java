@@ -2,6 +2,12 @@ package cn.itcast.erp.biz;
 
 import java.util.List;
 
+/**
+ * 业务逻辑通用接口
+ * @author Administrator
+ *
+ * @param <T>
+ */
 public interface IBaseBiz<T> {
 	
 	/**

@@ -17,6 +17,16 @@
 		<bean id="depAction" class="cn.itcast.erp.action.DepAction" scope="prototype">
 			<property name="depBiz" ref="depBiz"></property>
 		</bean>
+		
+		<!-- 员工 -->
+		<bean id="empAction" class="cn.itcast.erp.action.EmpAction" scope="prototype">
+			<property name="empBiz" ref="empBiz"></property>
+		</bean>
+		
+		<!-- 登陆、退出 -->
+		<bean id="loginAction" class="cn.itcast.erp.action.LoginAction" scope="prototype">
+			<property name="empBiz" ref="empBiz"></property>
+		</bean>
 	
 </beans>
 	
