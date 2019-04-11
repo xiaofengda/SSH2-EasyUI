@@ -53,6 +53,13 @@ public interface IBaseDao<T> {
 	public T get(long uuid);
 	
 	/**
+	 * 获取实体
+	 * @param id
+	 * @return
+	 */
+	public T get(String id);
+	
+	/**
 	 * 修改
 	 * @param t
 	 */

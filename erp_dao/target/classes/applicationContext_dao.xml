@@ -21,6 +21,11 @@
 	<bean id="empDao" class="cn.itcast.erp.dao.impl.EmpDao">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	
+	<!-- 菜单 -->
+	<bean id="menuDao" class="cn.itcast.erp.dao.impl.MenuDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 
 	
 </beans>

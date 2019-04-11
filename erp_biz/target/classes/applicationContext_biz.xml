@@ -22,6 +22,11 @@
 	<bean id="empBiz" class="cn.itcast.erp.biz.impl.EmpBiz">
 		<property name="empDao" ref="empDao"></property>
 	</bean>
+	
+	<!-- 菜单 -->
+	<bean id="menuBiz" class="cn.itcast.erp.biz.impl.MenuBiz">
+		<property name="menuDao" ref="menuDao"></property>
+	</bean>
 
 	
 </beans>

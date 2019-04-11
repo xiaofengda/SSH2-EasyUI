@@ -25,10 +25,12 @@ var _menus={
 
 
 $(function(){	
-	
+	//加载菜单
+	getTreeMenu();
 	//显示用户名
-	showUsern();
-	InitLeftMenu();
+	showUser();
+	//初始化左侧菜单
+	//InitLeftMenu();
 	tabClose();
 	tabCloseEven();
 	
@@ -37,9 +39,25 @@ $(function(){
 });
 
 /**
+ * 加载菜单
+ */
+function getTreeMenu(){
+	$.ajax({
+		type : 'post',
+		url : 'menu_getMenuTree',
+		dataType : 'json',
+		success : function(menu){
+			_menus = menu;
+			InitLeftMenu();
+		}
+	});
+	
+}
+
+/**
  * 显示用户名
  */
-function showUsern(){
+function showUser(){
 	$.ajax({
 		type : 'post',
 		url : 'login_showName',
@@ -57,7 +75,9 @@ function showUsern(){
 
 
 
-//初始化左侧
+/**
+ * 初始化左侧菜单
+ */
 function InitLeftMenu() {
 	$("#nav").accordion({animate:false,fit:true,border:false});
 	var selectedPanelname = '';

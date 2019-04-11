@@ -59,6 +59,13 @@ public interface IBaseBiz<T> {
 	public T get(long id);
 	
 	/**
+	 * 获取实体
+	 * @param id
+	 * @return
+	 */
+	public T get(String id);
+	
+	/**
 	 * 修改
 	 * @param t
 	 */

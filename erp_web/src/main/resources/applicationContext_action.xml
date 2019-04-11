@@ -23,6 +23,11 @@
 			<property name="empBiz" ref="empBiz"></property>
 		</bean>
 		
+		<!-- 菜单 -->
+		<bean id="menuAction" class="cn.itcast.erp.action.MenuAction" scope="prototype">
+			<property name="menuBiz" ref="menuBiz"></property>
+		</bean>
+		
 		<!-- 登陆、退出 -->
 		<bean id="loginAction" class="cn.itcast.erp.action.LoginAction" scope="prototype">
 			<property name="empBiz" ref="empBiz"></property>

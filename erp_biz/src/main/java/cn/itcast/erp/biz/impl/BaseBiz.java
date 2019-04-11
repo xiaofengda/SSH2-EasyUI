@@ -74,7 +74,16 @@ public class BaseBiz<T> implements IBaseBiz<T> {
 	 * @param id
 	 */
 	public T get(long uuid){
-		return (T) baseDao.get(uuid);
+		return baseDao.get(uuid);
+	}
+	
+	/**
+	 * 获取实体
+	 * @param id
+	 * @return
+	 */
+	public T get(String id){
+		return baseDao.get(id);
 	}
 	
 	/**

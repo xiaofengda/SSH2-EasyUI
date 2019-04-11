@@ -2517,3 +2517,4 @@
 0:0:0:0:0:0:0:1 - - [10/Apr/2019:18:01:01 +0800] "POST /erp/login_checkUser HTTP/1.1" 200 31 http-bio-8080-exec-9 94
 0:0:0:0:0:0:0:1 - - [10/Apr/2019:18:01:02 +0800] "GET /erp/index.html HTTP/1.1" 304 - http-bio-8080-exec-9 4
 0:0:0:0:0:0:0:1 - - [10/Apr/2019:18:01:02 +0800] "POST /erp/login_showName HTTP/1.1" 200 40 http-bio-8080-exec-9 6
+0:0:0:0:0:0:0:1 - - [10/Apr/2019:18:24:18 +0800] "GET /erp/adminjs/themes/default/images/tabs_close.gif HTTP/1.1" 200 829 http-bio-8080-exec-2 31

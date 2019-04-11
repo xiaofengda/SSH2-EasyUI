@@ -98,6 +98,15 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 	
 	/**
+	 * 获取实体
+	 * @param id
+	 * @return
+	 */
+	public T get(String id){
+		return this.getHibernateTemplate().get(entityClass, id);
+	}
+	
+	/**
 	 * 修改
 	 * @param t
 	 */
