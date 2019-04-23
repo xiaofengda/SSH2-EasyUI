@@ -17,4 +17,20 @@ public interface IEmpBiz extends IBaseBiz<Emp> {
 	 */
 	public Emp findByUsernameAndPwd(String username, String pwd);
 
+	/**
+	 * 修改密码
+	 * @param uuid
+	 * @param newPwd
+	 * @param oldNew
+	 */
+	public void updatePwd(Long uuid, String newPwd, String oldNew);
+	
+	/**
+	 * 重置密码
+	 * @param uuid
+	 * @param newPwd
+	 */
+	public void updatePwd_reset(Long uuid, String newPwd);
+
+
 }

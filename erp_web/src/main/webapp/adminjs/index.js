@@ -21,27 +21,11 @@ var _menus={
 			 ]
 		};
 
-
-
-
 $(function(){	
-	//加载菜单
-	getTreeMenu();
 	//显示用户名
 	showUser();
-	//初始化左侧菜单
-	//InitLeftMenu();
-	tabClose();
-	tabCloseEven();
 	
-	
-	
-});
-
-/**
- * 加载菜单
- */
-function getTreeMenu(){
+	//加载菜单
 	$.ajax({
 		type : 'post',
 		url : 'menu_getMenuTree',
@@ -52,7 +36,9 @@ function getTreeMenu(){
 		}
 	});
 	
-}
+	tabClose();
+	tabCloseEven();
+});
 
 /**
  * 显示用户名
@@ -64,16 +50,14 @@ function showUser(){
 		dataType : 'json',
 		success : function(rtn){
 			if(rtn.success){
-				$('#username').html(rtn.message);
+				$('#username').html(rtn['message']);
 			}else{
-				location.href="index.html";
+				location.href="login.html";
 			}
 		}
 		
 	});
 }
-
-
 
 /**
  * 初始化左侧菜单
@@ -150,15 +134,12 @@ function InitLeftMenu() {
 	},function(){
 		$(this).parent().removeClass("hover");
 	});
-
-
-
-
-
+	
 	//选中第一个
 	//var panels = $('#nav').accordion('panels');
 	//var t = panels[0].panel('options').title;
     //$('#nav').accordion('select', t);
+	
 }
 //获取左侧导航的图标
 function getIcon(menuid){
@@ -332,16 +313,70 @@ function msgShow(title, msgString, msgType) {
 
 //设置登录窗口
 function openPwd() {
-    $('#w').window({
+    $('#w').dialog({
         title: '修改密码',
         width: 300,
         modal: true,
-        shadow: true,
         closed: true,
-        height: 160,
-        resizable:false
+        height: 192,
+        buttons:[
+            {text:'保存',iconCls:'icon-save',handler:function(){
+                var $oldpass = $('#txtOldPass');
+                var $newpass = $('#txtNewPass');
+                var $rePass = $('#txtRePass');
+
+                if (!$oldpass.val()) {
+                    $.messager.alert('提示信息','请输入原密码！','info',function(){
+                        $oldpass.select();
+                    })
+                    return false;
+                }
+
+                if (!$newpass.val()) {
+                    $.messager.alert('提示信息','请输入新密码！','info',function(){
+                        $newpass.select();
+                    })
+                    return false;
+                }
+
+                if (!$rePass.val()) {
+                    $.messager.alert('提示信息','请再一次输入密码！','info',function(){
+                        $rePass.select();
+                    })
+                    return false;
+                }
+
+                if ($newpass.val() != $rePass.val()) {
+                    $.messager.alert('提示信息','两次密码不一至！请重新输入','info',function(){
+                        $rePass.select();
+                    })
+                    return false;
+                }
+
+                $.ajax({
+                    url:'emp_updatePwd',
+                    dataType:'json',
+                    type:'post',
+                    data: {oldPwd:$oldpass.val(), newPwd:$newpass.val()},
+                    success:function(rtn){
+                        $.messager.alert('提示',rtn.message,'info',function(){
+                        	if(rtn.success){
+                                $oldpass.val('');
+                                $newpass.val('');
+                                $rePass.val('');
+                                $('#w').dialog('close');
+                        	}
+                        });
+                    }
+                });
+            }},
+            {text:'取消',iconCls:'icon-cancel',handler:function(){
+                $('#w').dialog('close');
+            }}
+        ]
     });
 }
+
 //关闭登录窗口
 function closePwd() {
     $('#w').window('close');

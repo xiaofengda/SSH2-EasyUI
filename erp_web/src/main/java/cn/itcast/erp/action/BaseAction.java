@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 
 import com.alibaba.fastjson.JSON;
+import com.opensymphony.xwork2.ActionContext;
 
 import cn.itcast.erp.biz.IBaseBiz;
+import cn.itcast.erp.entity.Emp;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class BaseAction<T> {
@@ -69,7 +71,7 @@ public class BaseAction<T> {
 	public void getList(){
 		List<T> list = baseBiz.getList(t1, t2, param);
 		String jsonString = JSON.toJSONString(list);
-		getWrite(jsonString);
+		write(jsonString);
 	}
 	
 	/**
@@ -92,7 +94,7 @@ public class BaseAction<T> {
 		map.put("total", total);
 		map.put("rows", list);
 		String jsonString = JSON.toJSONString(map);
-		getWrite(jsonString);
+		write(jsonString);
 		
 	}
 	
@@ -112,10 +114,10 @@ public class BaseAction<T> {
 	public void add(){
 		try {
 			baseBiz.add(t);
-			getWrite(ajaxReturn(true, "新增成功！"));
+			ajaxReturn(true, "新增成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
-			getWrite(ajaxReturn(false, "新增失败！"));
+			ajaxReturn(false, "新增失败！");
 		}
 		
 	}
@@ -126,8 +128,12 @@ public class BaseAction<T> {
 	 */
 	public void get(){
 		T t = (T) baseBiz.get(id);
-		String jsonString = JSON.toJSONString(t);
-		getWrite(mapDate(jsonString, "t"));
+		String jsonString = JSON.toJSONStringWithDateFormat(t,"yyyy-MM-dd");
+		/*System.out.println("转换前：" + jsonString);*/
+		//{"name":"管理员组","tele":"000011","uuid":1}
+		String jsonStringAfter = mapDate(jsonString, "t");
+		/*System.out.println("转换后：" + jsonStringAfter);*/
+		write(jsonStringAfter);
 		
 	}
 	/**
@@ -137,10 +143,10 @@ public class BaseAction<T> {
 	public void update(){
 		try {
 			baseBiz.update(t);
-			getWrite(ajaxReturn(true, "修改成功！"));
+			ajaxReturn(true, "修改成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
-			getWrite(ajaxReturn(false, "修改失败！"));
+			ajaxReturn(false, "修改失败！");
 		}
 	}
 	
@@ -159,10 +165,10 @@ public class BaseAction<T> {
 	public void delete(){
 		try {
 			baseBiz.delete(id);
-			getWrite(ajaxReturn(true, "删除成功！"));
+			ajaxReturn(true, "删除成功！");
 		} catch (Exception e) {
 			e.printStackTrace();
-			getWrite(ajaxReturn(false, "删除失败！"));
+			ajaxReturn(false, "删除失败！");
 		}
 		
 	}
@@ -185,33 +191,42 @@ public class BaseAction<T> {
 	}
 	
 	/**
-	 * 封装页面相应
-	 * @param jsonString
+	 * 返回前端操作结果
+	 * @param success
+	 * @param message
+	 * @return
 	 */
-	public void getWrite(String jsonString){
-		try {
-			//相应对象
-			HttpServletResponse  response = ServletActionContext.getResponse();
-			//设置编码
-			response.setContentType("text/html;charset=utf-8");
-			//输出给页面
-			response.getWriter().println(jsonString);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+	public void ajaxReturn(boolean success, String message){
+		//返回前端的JSON数据
+		Map<String, Object> rtn = new HashMap<String, Object>();
+		rtn.put("success",success);
+		rtn.put("message",message);
+		write(JSON.toJSONString(rtn));
 	}
 	
 	/**
-	 * 返回ajax结构返回体
+	 * 输出字符串到前端
+	 * @param jsonString
 	 */
-	public String ajaxReturn(boolean success, String message){
-		Map<String, Object> rtn = new HashMap<String, Object>();
-		rtn.put("success", success);
-		rtn.put("message", message);
-		String jsonString = JSON.toJSONString(rtn);
-		return jsonString;
-		
+	public void write(String jsonString){
+		try {
+			//响应对象
+			HttpServletResponse response = ServletActionContext.getResponse();
+			//设置编码
+			response.setContentType("text/html;charset=utf-8"); 
+			//输出给页面
+			response.getWriter().write(jsonString);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 获取登陆的用户信息
+	 * @return
+	 */
+	public Emp getLoginUser(){
+		return (Emp) ActionContext.getContext().getSession().get("loginuser");
 	}
 
 }

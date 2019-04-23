@@ -1,5 +1,14 @@
 package cn.itcast.erp.action;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
+
+import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.ActionContext;
 
 import cn.itcast.erp.biz.IEmpBiz;
@@ -45,18 +54,19 @@ public class LoginAction extends BaseAction<Emp>{
 	 */
 	public void checkUser(){
 		try {
+			//验证账号密码
 			Emp loginuser = empBiz.findByUsernameAndPwd(username, pwd);
 			if(loginuser == null){	//失败
-				getWrite(ajaxReturn(false, "用户名或密码错误！"));
+				ajaxReturn(false, "用户名或密码错误！");
 				return;
 			}else {	//成功
 				//保存到session中，表示用户已经登陆了
 				ActionContext.getContext().getSession().put("loginuser", loginuser);
-				getWrite(ajaxReturn(true, ""));
+				ajaxReturn(true, "");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			getWrite(ajaxReturn(false, "登陆失败"));
+			ajaxReturn(false, "登陆失败");
 		}
 	}
 	
@@ -64,11 +74,12 @@ public class LoginAction extends BaseAction<Emp>{
 	 * 显示用户名
 	 */
 	public void showName(){
+		//从session中获得loginuser
 		Emp loginuser = (Emp) ActionContext.getContext().getSession().get("loginuser");
 		if(loginuser == null){
-			getWrite(ajaxReturn(false, "亲！您还没有登陆。"));
+			ajaxReturn(false, "亲！您还没有登陆。");
 		}else {
-			getWrite(ajaxReturn(true, loginuser.getName()));
+			ajaxReturn(true, loginuser.getName());
 		}
 	}
 	
@@ -82,4 +93,36 @@ public class LoginAction extends BaseAction<Emp>{
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 返回前端操作结果
+	 * @param success
+	 * @param message
+	 */
+	public void ajaxReturn(boolean success, String message){
+		//返回前端的JSON数据
+		Map<String, Object> rtn = new HashMap<String, Object>();
+		rtn.put("success",success);
+		rtn.put("message",message);
+		//JSON.toJSONString(rtn) => {"success":true,"message":'超级管理员'}
+		write(JSON.toJSONString(rtn));
+	}
+	
+	/**
+	 * 输出字符串到前端
+	 * @param jsonString
+	 */
+	public void write(String jsonString){
+		try {
+			//响应对象
+			HttpServletResponse response = ServletActionContext.getResponse();
+			//设置编码
+			response.setContentType("text/html;charset=utf-8"); 
+			//输出给页面
+			response.getWriter().write(jsonString);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

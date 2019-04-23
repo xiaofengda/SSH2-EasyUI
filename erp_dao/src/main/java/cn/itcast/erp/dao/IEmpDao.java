@@ -17,4 +17,11 @@ public interface IEmpDao extends IBaseDao<Emp> {
 	 */
 	public Emp findByUsernameAndPwd(String username, String pwd);
 
+	/**
+	 * 修改密码
+	 * @param uuid
+	 * @param newPwd
+	 */
+	public void updatePwd(Long uuid, String newPwd);
+	
 }

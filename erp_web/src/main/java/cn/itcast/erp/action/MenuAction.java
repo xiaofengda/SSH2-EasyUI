@@ -26,7 +26,7 @@ public class MenuAction extends BaseAction<Menu> {
 		//查询顶级菜单，即可带出其下所有子菜单
 		Menu menu = menuBiz.get("0");
 		String jsonString = JSON.toJSONString(menu, true);
-		getWrite(jsonString);
+		write(jsonString);
 	}
 	
 

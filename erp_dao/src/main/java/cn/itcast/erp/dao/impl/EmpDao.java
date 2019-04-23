@@ -77,4 +77,16 @@ public class EmpDao extends BaseDao<Emp> implements IEmpDao {
 		}
 		return null;
 	}
+	
+	/**
+	 * 修改密码
+	 * @param uuid
+	 * @param newPwd
+	 * @param oldNew
+	 */
+	public void updatePwd(Long uuid, String newPwd){
+		String hql= "update Emp set pwd = ? where uuid = ?";
+		this.getHibernateTemplate().bulkUpdate(hql, newPwd, uuid);
+	}
+	
 }
